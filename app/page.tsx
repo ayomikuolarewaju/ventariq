@@ -1,6 +1,6 @@
 // app/page.tsx
 
-import { MapPin, UserCheck, ShieldCheck } from "lucide-react";
+
 import Hero from "@/components/Hero";
 import InfoCard from "@/components/InfoCard";
 import CityCard from "@/components/CityCard";
