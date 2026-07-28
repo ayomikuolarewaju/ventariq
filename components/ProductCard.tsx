@@ -25,7 +25,7 @@ type Product = {
   features?: string[];
 };
 
-export default function ProductCard({ product }: { product: Product }) {
+export default function ProductCard({ sku,name,description,price,features }: Product) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 24 }}
@@ -38,26 +38,26 @@ export default function ProductCard({ product }: { product: Product }) {
       <div className="flex items-start justify-between p-6">
         <div>
           <span className="font-mono text-[11px] tracking-widest text-[#F5B301]">
-            FARE / {product.sku.toUpperCase()}
+            FARE / {sku.toUpperCase()}
           </span>
           <h3 className="mt-2 font-display text-2xl tracking-wide">
-            {product.name}
+            {name}
           </h3>
         </div>
-        {product.price != null && (
+        {price != null && (
           <div className="text-right">
             <span className="font-display text-3xl text-[#E8002D]">
-              ${product.price}
+              ${price}
             </span>
           </div>
         )}
       </div>
 
-      <p className="px-6 text-sm text-blue-200">{product.description}</p>
+      <p className="px-6 text-sm text-blue-200">{description}</p>
 
-      {product.features && product.features.length > 0 && (
+      {features && features.length > 0 && (
         <ul className="mt-4 space-y-2 px-6">
-          {product.features.map((f) => (
+          {features.map((f) => (
             <li key={f} className="flex items-start gap-2 text-sm text-white/80">
               <span className="mt-0.5 text-[#F5B301]">✓</span>
               <span>{f}</span>
@@ -80,7 +80,7 @@ export default function ProductCard({ product }: { product: Product }) {
       </div>
 
       <div className="p-6">
-        <PurchaseButton sku={product.sku} />
+        <PurchaseButton sku={sku} />
       </div>
     </motion.div>
   );

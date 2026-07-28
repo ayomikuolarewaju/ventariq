@@ -24,7 +24,7 @@ export default function WorldCupPage() {
       <section className="container py-20">
         <div className="grid gap-8 md:grid-cols-2">
           {products.map((product) => (
-            <ProductCard key={product.sku} product={product} />
+            <ProductCard key={product.sku} description={product.description} name={product.name} price={product.price} features={product.features} sku={product.sku} />
           ))}
         </div>
       </section>

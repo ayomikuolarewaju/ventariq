@@ -5,8 +5,8 @@ export const products = [
     sku: "custom_match_day_plan",
     description:
       "A personalized World Cup match-day experience including transport, stadium planning, food options and city movement.",
-    price: "$99",
-    type: "personalized",
+    price: 99,
+    features: ["personalized", "match-day-ready", "city-by-city"],
   },
 
   {
@@ -15,8 +15,8 @@ export const products = [
     sku: "family_muslim_visitor_plan",
     description:
       "Family-friendly World Cup planning with halal food, prayer locations and cultural support.",
-    price: "$149",
-    type: "personalized",
+    price: 149,
+    features: ["family-friendly", "halal-food", "prayer-locations", "cultural-support"],
   },
 
 
@@ -26,8 +26,8 @@ export const products = [
     sku: "group_match_day_concierge",
     description:
       "Dedicated support for supporters groups, organizations and corporate visitors.",
-    price: "$299",
-    type: "personalized",
+    price: 299,
+    features: ["personalized"],
   },
 
 
@@ -37,7 +37,7 @@ export const products = [
     sku: "complete_visitor_pack",
     description:
       "Complete World Cup visitor resources covering cities, transport and essential information.",
-    price: "$49",
-    type: "instant",
+    price: 49,
+    features: ["complete-resources"],
   }
 ];
