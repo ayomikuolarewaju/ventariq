@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
+import { EASE_OUT } from "@/lib/motion";
 
 /**
  * CityCard — ComfortLifeUS
@@ -35,7 +36,7 @@ export default function CityCard({ city }: { city: City }) {
       initial={{ opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-60px" }}
-      transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+      transition={{ duration: 0.5, ease: EASE_OUT }}
       whileHover={{ y: -6 }}
       className="group relative overflow-hidden rounded-xl bg-[#142050] shadow-lg shadow-black/20"
     >

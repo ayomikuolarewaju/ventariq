@@ -3,6 +3,7 @@
 
 import { motion } from "framer-motion";
 import PurchaseButton from "@/components/PurchaseButton";
+import { EASE_OUT } from "@/lib/motion";
 
 /**
  * PlanDetailLayout — ComfortLifeUS
@@ -33,7 +34,7 @@ export default function PlanDetailLayout({
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+        transition={{ duration: 0.5, ease: EASE_OUT  }}
       >
         <p className="font-mono text-xs tracking-[0.3em] text-[#9DB2FF]">
           {eyebrow}

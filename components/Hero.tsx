@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
+import { EASE_OUT } from "@/lib/motion";
 
 /**
  * Hero — ComfortLifeUS
@@ -9,16 +10,6 @@ import Image from "next/image";
  * Visual idea: the hero reads like the top half of a match ticket / boarding
  * pass — a mono "route code" eyebrow, a big condensed headline, and a
  * bottom "route strip" listing host cities like gate codes on a stub.
- *
- * Fonts expected (add once, e.g. in app/layout.tsx via next/font):
- *   --font-display -> Bebas Neue (condensed, stadium-signage energy)
- *   --font-mono    -> Space Mono (ticket / gate-code labels)
- * Tailwind config should map these, e.g.:
- *   fontFamily: { display: ["var(--font-display)"], mono: ["var(--font-mono)"] }
- *
- * Swap HERO_IMAGE for a real photo (stadium crowd, host-city skyline, etc.)
- * Recommended: /public/hero/world-cup-2026.jpg, 1600x1000+, warm/dusk light
- * so it doesn't fight the navy background.
  */
 
 const HERO_IMAGE = "/hero/world-cup-2026.png";
@@ -43,29 +34,24 @@ const rise = {
   show: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] },
+    transition: { duration: 0.6, ease: EASE_OUT },
   },
 };
 
 export default function Hero() {
   return (
     <section className="relative overflow-hidden bg-[#0D1B4B]">
-      {/* background photo, dimmed under the navy */}
       <div className="absolute inset-0">
         <Image
           src={HERO_IMAGE}
-          alt=""
-          priority
+          alt="hero image"
+          width={1920}
+          height={1080}
           className="object-cover opacity-25"
-          width={1600}
-          height={1000}
-          sizes="100vw"
-          
         />
         <div className="absolute inset-0 bg-gradient-to-b from-[#0D1B4B]/40 via-[#0D1B4B]/85 to-[#0D1B4B]" />
       </div>
 
-      {/* diagonal crimson bunting stripe — signature motif, echoes stadium bunting */}
       <div
         aria-hidden
         className="absolute -right-24 top-0 h-[140%] w-[45%] rotate-[8deg] bg-[#E8002D]/90"
@@ -122,7 +108,6 @@ export default function Hero() {
           </a>
         </motion.div>
 
-        {/* route strip — ticket-stub footer, reads like gate codes on a boarding pass */}
         <motion.div
           variants={rise}
           className="mt-16 border-t border-dashed border-white/20 pt-6"

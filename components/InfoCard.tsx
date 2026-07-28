@@ -10,6 +10,7 @@ import {
   Globe2,
   type LucideIcon,
 } from "lucide-react";
+import { EASE_OUT } from "@/lib/motion";
 
 /**
  * InfoCard — ComfortLifeUS
@@ -53,7 +54,7 @@ export default function InfoCard({
       initial={{ opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-60px" }}
-      transition={{ duration: 0.5, delay: index * 0.1, ease: [0.22, 1, 0.36, 1] }}
+      transition={{ duration: 0.5, delay: index * 0.1, ease: EASE_OUT}}
       whileHover={{ y: -4 }}
       className="relative overflow-hidden rounded-xl bg-[#142050] p-6"
     >

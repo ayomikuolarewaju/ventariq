@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import PurchaseButton from "@/components/PurchaseButton";
+import { EASE_OUT } from "@/lib/motion";
 
 /**
  * ServiceBrowser — ComfortLifeUS
@@ -59,7 +60,7 @@ export default function ServiceBrowser({
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -10 }}
-          transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.25, ease: EASE_OUT }}
           className="mt-6 grid gap-4 md:grid-cols-2"
         >
           {activeServices.map((service, i) => {
