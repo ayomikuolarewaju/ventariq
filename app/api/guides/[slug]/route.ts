@@ -18,98 +18,98 @@
 //     name, description
 // Adjust the query below to match your actual schema/product_sku values.
 
-import { NextResponse } from "next/server";
-import { renderToBuffer } from "@react-pdf/renderer";
-import { createClient } from "@/lib/supabase-server";
-import { CityGuideDocument } from "@/lib/pdf/CityGuideDocument";
+// import { NextResponse } from "next/server";
+// import { renderToBuffer } from "@react-pdf/renderer";
+// import { createClient } from "@/lib/supabase-server";
+// // import { CityGuideDocument } from "@/lib/pdf/CityGuideDocument";
 
-export async function GET(
-  _req: Request,
-  { params }: { params: { slug: string } }
-) {
-  const supabase = await createClient();
+// export async function GET(
+//   _req: Request,
+//   { params }: { params: { slug: string } }
+// ) {
+//   const supabase = await createClient();
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+//   const {
+//     data: { user },
+//   } = await supabase.auth.getUser();
 
-  if (!user) {
-    return NextResponse.json({ error: "Not signed in" }, { status: 401 });
-  }
+//   if (!user) {
+//     return NextResponse.json({ error: "Not signed in" }, { status: 401 });
+//   }
 
-  // 1. verify purchase
-  const { data: order } = await supabase
-    .from("orders")
-    .select("id")
-    .eq("customer_id", user.id)
-    .eq("product_sku", `${params.slug}_city_guide`)
-    .eq("fulfillment_status", "completed")
-    .maybeSingle();
+//   // 1. verify purchase
+//   const { data: order } = await supabase
+//     .from("orders")
+//     .select("id")
+//     .eq("customer_id", user.id)
+//     .eq("product_sku", `${params.slug}_city_guide`)
+//     .eq("fulfillment_status", "completed")
+//     .maybeSingle();
 
-  if (!order) {
-    return NextResponse.json(
-      { error: "No completed purchase found for this guide" },
-      { status: 403 }
-    );
-  }
+//   if (!order) {
+//     return NextResponse.json(
+//       { error: "No completed purchase found for this guide" },
+//       { status: 403 }
+//     );
+//   }
 
-  const storagePath = `${params.slug}/${user.id}.pdf`;
+//   const storagePath = `${params.slug}/${user.id}.pdf`;
 
-  // 2. return a cached copy if it already exists
-  const { data: existing } = await supabase.storage
-    .from("guides")
-    .createSignedUrl(storagePath, 60 * 10); // 10 minutes
+//   // 2. return a cached copy if it already exists
+//   const { data: existing } = await supabase.storage
+//     .from("guides")
+//     .createSignedUrl(storagePath, 60 * 10); // 10 minutes
 
-  if (existing?.signedUrl) {
-    return NextResponse.json({ url: existing.signedUrl });
-  }
+//   if (existing?.signedUrl) {
+//     return NextResponse.json({ url: existing.signedUrl });
+//   }
 
-  // 3. otherwise fetch content and generate the PDF
-  const { data: city } = await supabase
-    .from("cities")
-    .select("*")
-    .eq("slug", params.slug)
-    .single();
+//   // 3. otherwise fetch content and generate the PDF
+//   const { data: city } = await supabase
+//     .from("cities")
+//     .select("*")
+//     .eq("slug", params.slug)
+//     .single();
 
-  if (!city) {
-    return NextResponse.json({ error: "City not found" }, { status: 404 });
-  }
+//   if (!city) {
+//     return NextResponse.json({ error: "City not found" }, { status: 404 });
+//   }
 
-  const { data: services } = await supabase
-    .from("city_services")
-    .select("category, name, description")
-    .eq("city_slug", params.slug);
+//   const { data: services } = await supabase
+//     .from("city_services")
+//     .select("category, name, description")
+//     .eq("city_slug", params.slug);
 
-  const buffer = await renderToBuffer(
-    <CityGuideDocument
-      cityName={city.name}
-      tagline={city.description}
-      heroImage={city.image}
-      services={services ?? []}
-    />
-  );
+//   const buffer = await renderToBuffer(
+//     <CityGuideDocument
+//       cityName={city.name}
+//       tagline={city.description}
+//       heroImage={city.image}
+//       services={services ?? []}
+//     />
+//   );
 
-  const { error: uploadError } = await supabase.storage
-    .from("guides")
-    .upload(storagePath, buffer, {
-      contentType: "application/pdf",
-      upsert: true,
-    });
+//   const { error: uploadError } = await supabase.storage
+//     .from("guides")
+//     .upload(storagePath, buffer, {
+//       contentType: "application/pdf",
+//       upsert: true,
+//     });
 
-  if (uploadError) {
-    return NextResponse.json({ error: uploadError.message }, { status: 500 });
-  }
+//   if (uploadError) {
+//     return NextResponse.json({ error: uploadError.message }, { status: 500 });
+//   }
 
-  const { data: signed, error: signError } = await supabase.storage
-    .from("guides")
-    .createSignedUrl(storagePath, 60 * 10);
+//   const { data: signed, error: signError } = await supabase.storage
+//     .from("guides")
+//     .createSignedUrl(storagePath, 60 * 10);
 
-  if (signError || !signed) {
-    return NextResponse.json(
-      { error: signError?.message ?? "Could not sign URL" },
-      { status: 500 }
-    );
-  }
+//   if (signError || !signed) {
+//     return NextResponse.json(
+//       { error: signError?.message ?? "Could not sign URL" },
+//       { status: 500 }
+//     );
+//   }
 
-  return NextResponse.json({ url: signed.signedUrl });
-}
+//   return NextResponse.json({ url: signed.signedUrl });
+// }
