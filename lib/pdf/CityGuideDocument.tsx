@@ -1,15 +1,8 @@
 // lib/pdf/CityGuideDocument.tsx
 //
-// Renders the purchased city guide as an actual PDF, server-side, using
-// @react-pdf/renderer. Keeps the same visual language as the web app
-// (navy/crimson/gold, mono "ticket" labels) so the PDF feels like part
-// of the same product, not a generic export.
-//
 // npm install @react-pdf/renderer
 //
-// Fonts: register real font files rather than fetching from a URL at
-// render time (safer for serverless — no network dependency at build).
-// Download once and commit to your repo:
+// Fonts: download once and commit to your repo:
 //   public/fonts/BebasNeue-Regular.ttf
 //   public/fonts/SpaceMono-Regular.ttf
 //   public/fonts/Inter-Regular.ttf
@@ -44,38 +37,12 @@ const GOLD = "#F5B301";
 const MIST = "#9DB2FF";
 
 const styles = StyleSheet.create({
-  page: {
-    backgroundColor: NAVY,
-    color: "#FFFFFF",
-    fontFamily: "Inter",
-    padding: 0,
-  },
-  cover: {
-    height: "100%",
-    padding: 48,
-    justifyContent: "space-between",
-  },
-  eyebrow: {
-    fontFamily: "SpaceMono",
-    fontSize: 10,
-    letterSpacing: 3,
-    color: MIST,
-  },
-  coverTitle: {
-    fontFamily: "Bebas",
-    fontSize: 64,
-    color: "#FFFFFF",
-    marginTop: 12,
-  },
-  coverTitleAccent: {
-    color: CRIMSON,
-  },
-  coverSub: {
-    fontSize: 12,
-    color: MIST,
-    marginTop: 10,
-    maxWidth: 340,
-  },
+  page: { backgroundColor: NAVY, color: "#FFFFFF", fontFamily: "Inter", padding: 0 },
+  cover: { height: "100%", padding: 48, justifyContent: "space-between" },
+  eyebrow: { fontFamily: "SpaceMono", fontSize: 10, letterSpacing: 3, color: MIST },
+  coverTitle: { fontFamily: "Bebas", fontSize: 64, color: "#FFFFFF", marginTop: 12 },
+  coverTitleAccent: { color: CRIMSON },
+  coverSub: { fontSize: 12, color: MIST, marginTop: 10, maxWidth: 340 },
   routeStrip: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -84,19 +51,9 @@ const styles = StyleSheet.create({
     borderTopStyle: "dashed",
     paddingTop: 14,
   },
-  routeCode: {
-    fontFamily: "SpaceMono",
-    fontSize: 9,
-    color: GOLD,
-  },
-  section: {
-    padding: 40,
-  },
-  sectionTitle: {
-    fontFamily: "Bebas",
-    fontSize: 28,
-    marginBottom: 4,
-  },
+  routeCode: { fontFamily: "SpaceMono", fontSize: 9, color: GOLD },
+  section: { padding: 40 },
+  sectionTitle: { fontFamily: "Bebas", fontSize: 28, marginBottom: 4 },
   sectionEyebrow: {
     fontFamily: "SpaceMono",
     fontSize: 9,
@@ -104,23 +61,9 @@ const styles = StyleSheet.create({
     color: GOLD,
     marginBottom: 6,
   },
-  card: {
-    backgroundColor: NAVY_CARD,
-    borderRadius: 6,
-    padding: 14,
-    marginTop: 10,
-  },
-  cardTitle: {
-    fontFamily: "Inter",
-    fontWeight: "bold",
-    fontSize: 12,
-  },
-  cardBody: {
-    fontSize: 10,
-    color: MIST,
-    marginTop: 4,
-    lineHeight: 1.4,
-  },
+  card: { backgroundColor: NAVY_CARD, borderRadius: 6, padding: 14, marginTop: 10 },
+  cardTitle: { fontFamily: "Inter", fontWeight: "bold", fontSize: 12 },
+  cardBody: { fontSize: 10, color: MIST, marginTop: 4, lineHeight: 1.4 },
   footer: {
     position: "absolute",
     bottom: 24,
@@ -140,14 +83,17 @@ type Service = {
   description: string;
 };
 
-type CityGuideProps = {
+interface CityGuideProps {
+  eyebrow: string;
   cityName: string;
   tagline: string;
   heroImage?: string;
   services: Service[];
 };
 
+
 export function CityGuideDocument({
+  eyebrow,
   cityName,
   tagline,
   heroImage,
@@ -172,10 +118,8 @@ export function CityGuideDocument({
         )}
         <View style={styles.cover}>
           <View>
-            <Text style={styles.eyebrow}>USA · 2026 · MATCH-DAY TRAVEL</Text>
-            <Text style={styles.coverTitle}>
-              {cityName.toUpperCase()}
-            </Text>
+            <Text style={styles.eyebrow}>{eyebrow}</Text>
+            <Text style={styles.coverTitle}>{cityName.toUpperCase()}</Text>
             <Text style={[styles.coverTitle, styles.coverTitleAccent]}>
               GUIDE
             </Text>
@@ -213,5 +157,6 @@ export function CityGuideDocument({
         </Page>
       ))}
     </Document>
+   
   );
 }
