@@ -1,26 +1,25 @@
 // app/page.tsx
 
-
 import Hero from "@/components/Hero";
 import InfoCard from "@/components/InfoCard";
-import CityCard from "@/components/CityCard";
-import { cities } from "@/lib/cities";
+import EventCard from "@/components/EventCard";
+import { events, getFeaturedEvent } from "@/lib/events";
 
 const FEATURES = [
   {
-    icon: "MapPin",
-    title: "City Guides",
+    icon: "MapPin" as const,
+    title: "Event Guides",
     description:
-      "Explore World Cup host cities — transport, food, culture, and everything in between.",
+      "Explore host cities and venues — transport, food, culture, and everything in between.",
   },
   {
-    icon: "UserCheck",
+    icon: "UserCheck" as const,
     title: "Personal Plans",
     description:
-      "Custom match-day and family travel assistance, built around your itinerary.",
+      "Custom session-day and family travel assistance, built around your itinerary.",
   },
   {
-    icon: "ShieldCheck",
+    icon: "ShieldCheck" as const,
     title: "Visitor Support",
     description:
       "Hotels, transportation, language and prayer support — on the ground when you need it.",
@@ -28,11 +27,24 @@ const FEATURES = [
 ];
 
 export default function Home() {
-  const featuredCities = cities.slice(0, 3);
+  const featured = getFeaturedEvent();
+  const otherEvents = events.filter((e) => e.slug !== featured.slug).slice(0, 2);
+  const spotlightEvents = [featured, ...otherEvents];
 
   return (
     <main>
-      <Hero />
+      <Hero
+        eyebrow={featured.eyebrow}
+        titleLine1="YOUR ROUTE"
+        titleLine2={`INTO THE ${featured.name.toUpperCase()}.`}
+        tagline={featured.tagline}
+        heroImage={featured.heroImage}
+        routeItems={featured.routeItems}
+        primaryHref={`/events/${featured.slug}`}
+        primaryLabel="Plan My Trip"
+        secondaryHref="/events"
+        secondaryLabel="Browse All Events"
+      />
 
       {/* value props */}
       <section className="container py-24">
@@ -45,38 +57,36 @@ export default function Home() {
 
         <div className="mt-12 grid gap-6 md:grid-cols-3">
           {FEATURES.map((f, i) => (
-            <InfoCard key={f.title} index={i}  description={f.description} icon={f.icon} title={f.title} />
+            <InfoCard key={f.title} index={i} {...f} />
           ))}
         </div>
       </section>
 
-      {/* featured cities */}
-      {featuredCities.length > 0 && (
-        <section className="container py-16">
-          <div className="flex flex-wrap items-end justify-between gap-4">
-            <div>
-              <p className="font-mono text-xs tracking-[0.3em] text-[#F5B301]">
-                HOST CITIES
-              </p>
-              <h2 className="mt-3 font-display text-4xl tracking-wide">
-                Start with a city.
-              </h2>
-            </div>
-            <a
-              href="/cities"
-              className="font-mono text-xs tracking-widest text-white/70 transition-colors hover:text-white"
-            >
-              VIEW ALL CITIES →
-            </a>
+      {/* events */}
+      <section className="container py-16">
+        <div className="flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <p className="font-mono text-xs tracking-[0.3em] text-[#F5B301]">
+              EVENTS
+            </p>
+            <h2 className="mt-3 font-display text-4xl tracking-wide">
+              Start with an event.
+            </h2>
           </div>
+          <a
+            href="/events"
+            className="font-mono text-xs tracking-widest text-white/70 transition-colors hover:text-white"
+          >
+            VIEW ALL EVENTS →
+          </a>
+        </div>
 
-          <div className="mt-10 grid gap-6 md:grid-cols-3">
-            {featuredCities.map((city) => (
-              <CityCard key={city.slug} city={city} />
-            ))}
-          </div>
-        </section>
-      )}
+        <div className="mt-10 grid gap-6 md:grid-cols-3">
+          {spotlightEvents.map((event) => (
+            <EventCard key={event.slug} event={event} />
+          ))}
+        </div>
+      </section>
 
       {/* closing CTA band */}
       <section className="relative mt-24 overflow-hidden bg-[#E8002D] py-20">
@@ -96,7 +106,7 @@ export default function Home() {
             Land knowing exactly where to go.
           </h2>
           <a
-            href="/world-cup"
+            href={`/events/${featured.slug}`}
             className="mt-8 inline-block rounded bg-white px-7 py-3 font-bold text-[#E8002D] transition-transform hover:-translate-y-0.5"
           >
             Plan My Trip

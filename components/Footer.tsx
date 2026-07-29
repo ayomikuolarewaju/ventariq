@@ -1,32 +1,30 @@
 // components/Footer.tsx
 
 import Link from "next/link";
-// import { Instagram, Twitter, Mail } from "lucide-react";
-import { cities } from "@/lib/cities";
+import { Mail } from "lucide-react";
+import { getFeaturedEvent } from "@/lib/events";
 
 /**
- * Footer — ComfortLifeUS (v2)
+ * Footer — ComfortLifeUS (v3)
  *
- * Builds on the original perforation motif but adds:
- *   - a newsletter capture row (matches the crimson CTA band on the homepage)
- *   - dynamic host-city links pulled from lib/cities, so this stays
- *     accurate without manual edits as cities are added
- *   - social links
+ * Now reads from the events model instead of hardcoded World Cup links
+ * and lib/cities. The "PLAN" group points at /events, and the location
+ * column + bottom route-strip both reflect whichever event is currently
+ * featured (US Open today) — updates automatically as events change.
  */
 
 const GROUPS = [
   {
     title: "PLAN",
     links: [
-      { href: "/world-cup", label: "World Cup Travel Plans" },
-      { href: "/cities", label: "Host Cities" },
+      { href: "/events", label: "All Events" },
+      { href: "/about", label: "About" },
       { href: "/intake", label: "Start My Intake" },
     ],
   },
   {
     title: "SUPPORT",
     links: [
-      { href: "/about", label: "About" },
       { href: "/contact", label: "Contact" },
       { href: "/dashboard", label: "My Travel Plan" },
     ],
@@ -34,7 +32,8 @@ const GROUPS = [
 ];
 
 export default function Footer() {
-  const topCities = cities.slice(0, 4);
+  const featured = getFeaturedEvent();
+  const topLocations = featured.locations.slice(0, 4);
 
   return (
     <footer className="mt-24 bg-[#0A1440]">
@@ -54,7 +53,7 @@ export default function Footer() {
               STAY IN THE LOOP
             </p>
             <h3 className="mt-2 font-display text-3xl tracking-wide">
-              Get city guide drops before they go live.
+              Get {featured.name} guide drops before they go live.
             </h3>
           </div>
 
@@ -98,24 +97,24 @@ export default function Footer() {
               COMFORT<span className="text-[#E8002D]">LIFE</span>US
             </p>
             <p className="mt-3 max-w-sm text-sm text-blue-200">
-              City-by-city World Cup travel guides and visitor support,
-              built so you land knowing exactly where to go.
+              Event-by-event travel guides and visitor support, built so
+              you land knowing exactly where to go.
             </p>
 
-            {/* <div className="mt-6 flex gap-3">
+            <div className="mt-6 flex gap-3">
               <a
                 href="#"
                 aria-label="Instagram"
                 className="flex h-9 w-9 items-center justify-center rounded-full bg-[#142050] text-white/70 transition-colors hover:text-white"
               >
-                <Instagram size={16} />
+                <Mail size={16} />
               </a>
               <a
                 href="#"
                 aria-label="Twitter"
                 className="flex h-9 w-9 items-center justify-center rounded-full bg-[#142050] text-white/70 transition-colors hover:text-white"
               >
-                <Twitter size={16} />
+                <Mail size={16} />
               </a>
               <a
                 href="mailto:hello@comfortlifeus.com"
@@ -124,7 +123,7 @@ export default function Footer() {
               >
                 <Mail size={16} />
               </a>
-            </div> */}
+            </div>
           </div>
 
           {GROUPS.map((group) => (
@@ -147,19 +146,19 @@ export default function Footer() {
             </div>
           ))}
 
-          {topCities.length > 0 && (
+          {topLocations.length > 0 && (
             <div>
               <p className="font-mono text-xs tracking-widest text-[#F5B301]">
-                HOST CITIES
+                {featured.name.toUpperCase()}
               </p>
               <ul className="mt-4 space-y-2">
-                {topCities.map((city) => (
-                  <li key={city.slug}>
+                {topLocations.map((location) => (
+                  <li key={location.slug}>
                     <Link
-                      href={`/cities/${city.slug}`}
+                      href={`/events/${featured.slug}/locations/${location.slug}`}
                       className="text-sm text-white/70 transition-colors hover:text-white"
                     >
-                      {city.name}
+                      {location.name}
                     </Link>
                   </li>
                 ))}
@@ -170,7 +169,7 @@ export default function Footer() {
 
         <div className="flex flex-col gap-3 border-t border-white/10 py-6 text-xs text-white/40 md:flex-row md:items-center md:justify-between">
           <span>© {new Date().getFullYear()} ComfortLifeUS. All rights reserved.</span>
-          <span className="font-mono tracking-widest">USA · 2026 · MATCH-DAY TRAVEL</span>
+          <span className="font-mono tracking-widest">{featured.eyebrow}</span>
         </div>
       </div>
     </footer>

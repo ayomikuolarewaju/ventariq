@@ -8,11 +8,10 @@ import { EASE_OUT } from "@/lib/motion";
 /**
  * ServiceBrowser — ComfortLifeUS
  *
- * The in-app alternative to opening the PDF: category tabs (mono ticket
- * labels, same family as Hero/CityCard) with an animated switch. If the
- * guide hasn't been purchased, only the first item per category shows in
- * full — the rest render as locked stubs to preview scope without giving
- * away the content.
+ * The in-app alternative to opening the PDF. Generalized to take a
+ * `guideSku` directly (e.g. "us-open_arthur-ashe_guide") rather than a
+ * city-specific slug, so the same component works for World Cup cities
+ * and US Open venues alike.
  */
 
 type Service = {
@@ -24,11 +23,11 @@ type Service = {
 export default function ServiceBrowser({
   services,
   isUnlocked,
-  citySlug,
+  guideSku,
 }: {
   services: Service[];
   isUnlocked: boolean;
-  citySlug: string;
+  guideSku: string;
 }) {
   const categories = Array.from(new Set(services.map((s) => s.category)));
   const [active, setActive] = useState(categories[0]);
@@ -37,7 +36,6 @@ export default function ServiceBrowser({
 
   return (
     <div>
-      {/* tab strip, ticket-code styling */}
       <div className="flex flex-wrap gap-2 border-b border-dashed border-white/20 pb-3">
         {categories.map((cat) => (
           <button
@@ -105,7 +103,7 @@ export default function ServiceBrowser({
             service across all categories, plus the downloadable PDF.
           </p>
           <div className="mt-4">
-            <PurchaseButton sku={`${citySlug}_city_guide`} />
+            <PurchaseButton sku={guideSku} />
           </div>
         </div>
       )}

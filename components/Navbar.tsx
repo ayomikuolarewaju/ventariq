@@ -4,17 +4,10 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
-
-/**
- * Navbar — ComfortLifeUS
- *
- * Keeps the mono "ticket label" language from Hero/CityCard for the
- * links, and picks up a solid navy backing once you scroll past the
- * hero so text stays legible over photos.
- */
+import { EASE_OUT } from "@/lib/motion";
 
 const LINKS = [
-  { href: "/world-cup", label: "World Cup" },
+  { href: "/events", label: "Events" },
   { href: "/cities", label: "Cities" },
   { href: "/about", label: "About" },
   { href: "/contact", label: "Contact" },
@@ -49,7 +42,7 @@ export default function Navbar() {
               <li key={link.href} className="relative">
                 <Link
                   href={link.href}
-                  className={`font-mono cursor-pointer font-bold text-xs tracking-widest transition-colors ${
+                  className={`font-mono text-xs tracking-widest transition-colors ${
                     active ? "text-white" : "text-white/60 hover:text-white"
                   }`}
                 >
@@ -59,7 +52,7 @@ export default function Navbar() {
                   <motion.span
                     layoutId="nav-underline"
                     className="absolute -bottom-2 left-0 h-[2px] w-full bg-[#E8002D]"
-                    transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                    transition={{ duration: 0.3, ease: EASE_OUT }}
                   />
                 )}
               </li>
@@ -68,7 +61,7 @@ export default function Navbar() {
         </ul>
 
         <Link
-          href="/world-cup"
+          href="/events"
           className="rounded bg-[#E8002D] px-5 py-2 text-sm font-bold transition-transform hover:-translate-y-0.5"
         >
           Get Started

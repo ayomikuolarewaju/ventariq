@@ -7,20 +7,25 @@ import { EASE_OUT } from "@/lib/motion";
 /**
  * Hero — ComfortLifeUS
  *
- * Visual idea: the hero reads like the top half of a match ticket / boarding
- * pass — a mono "route code" eyebrow, a big condensed headline, and a
- * bottom "route strip" listing host cities like gate codes on a stub.
+ * Now data-driven so it can represent whichever event is currently
+ * featured (US Open today, World Cup before it, whatever comes next) —
+ * pass an EventItem-shaped object in in rather than hardcoding one event.
  */
 
-const HERO_IMAGE = "/hero/world-cup-2026.png";
+type RouteItem = { code: string; label: string };
 
-const ROUTE_CODES = [
-  { code: "NYC", label: "New York" },
-  { code: "LAX", label: "Los Angeles" },
-  { code: "MIA", label: "Miami" },
-  { code: "DAL", label: "Dallas" },
-  { code: "ATL", label: "Atlanta" },
-];
+type HeroProps = {
+  eyebrow: string;
+  titleLine1: string;
+  titleLine2: string;
+  tagline: string;
+  heroImage?: string;
+  routeItems: RouteItem[];
+  primaryHref: string;
+  primaryLabel: string;
+  secondaryHref: string;
+  secondaryLabel: string;
+};
 
 const container = {
   hidden: {},
@@ -38,17 +43,31 @@ const rise = {
   },
 };
 
-export default function Hero() {
+export default function Hero({
+  eyebrow,
+  titleLine1,
+  titleLine2,
+  tagline,
+  heroImage,
+  routeItems,
+  primaryHref,
+  primaryLabel,
+  secondaryHref,
+  secondaryLabel,
+}: HeroProps) {
   return (
     <section className="relative overflow-hidden bg-[#0D1B4B]">
       <div className="absolute inset-0">
-        <Image
-          src={HERO_IMAGE}
-          alt="hero image"
-          width={1920}
-          height={1080}
-          className="object-cover opacity-25"
-        />
+        {heroImage && (
+          <Image
+            src={heroImage}
+            alt=""
+            width={1920}
+            height={1080}
+            priority
+            className="object-cover opacity-25"
+          />
+        )}
         <div className="absolute inset-0 bg-gradient-to-b from-[#0D1B4B]/40 via-[#0D1B4B]/85 to-[#0D1B4B]" />
       </div>
 
@@ -73,38 +92,37 @@ export default function Hero() {
           variants={rise}
           className="font-mono text-sm tracking-[0.3em] text-[#9DB2FF]"
         >
-          USA · 2026 · MATCH-DAY TRAVEL
+          {eyebrow}
         </motion.p>
 
         <motion.h1
           variants={rise}
           className="mt-4 max-w-3xl font-display text-6xl leading-[0.95] tracking-wide md:text-8xl"
         >
-          YOUR ROUTE
+          {titleLine1}
           <br />
-          <span className="text-[#E8002D]">INTO THE CUP.</span>
+          <span className="text-[#E8002D]">{titleLine2}</span>
         </motion.h1>
 
         <motion.p
           variants={rise}
           className="mt-6 max-w-xl text-lg text-blue-200"
         >
-          City guides, match-day logistics and visitor support — built
-          city-by-city, so you land knowing exactly where to go.
+          {tagline}
         </motion.p>
 
         <motion.div variants={rise} className="mt-9 flex flex-wrap gap-4">
           <a
-            href="/world-cup"
+            href={primaryHref}
             className="rounded bg-[#E8002D] px-7 py-3 font-bold transition-transform hover:-translate-y-0.5 hover:shadow-lg hover:shadow-[#E8002D]/30"
           >
-            Plan My Trip
+            {primaryLabel}
           </a>
           <a
-            href="/cities"
+            href={secondaryHref}
             className="rounded border border-white/25 px-7 py-3 font-bold text-white/90 transition-colors hover:border-white/60"
           >
-            Browse Host Cities
+            {secondaryLabel}
           </a>
         </motion.div>
 
@@ -113,11 +131,11 @@ export default function Hero() {
           className="mt-16 border-t border-dashed border-white/20 pt-6"
         >
           <div className="flex flex-wrap gap-x-8 gap-y-3 font-mono text-xs tracking-widest text-white/50">
-            {ROUTE_CODES.map((c) => (
-              <span key={c.code} className="flex items-center gap-2">
-                <span className="text-[#F5B301]">{c.code}</span>
+            {routeItems.map((r) => (
+              <span key={r.code} className="flex items-center gap-2">
+                <span className="text-[#F5B301]">{r.code}</span>
                 <span className="text-white/30">/</span>
-                <span>{c.label}</span>
+                <span>{r.label}</span>
               </span>
             ))}
           </div>

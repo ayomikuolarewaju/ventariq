@@ -6,13 +6,18 @@ import { motion } from "framer-motion";
 /**
  * DownloadGuideButton — ComfortLifeUS
  *
- * Drop this on a city page (next to PurchaseButton) or the dashboard.
- * Calls /api/guides/[slug]; if the user hasn't completed a purchase
- * it'll get a 403 and show a friendly prompt to buy first, otherwise
- * it opens the signed PDF URL in a new tab.
+ * Generalized to take eventSlug + locationSlug and call
+ * /api/guides/[eventSlug]/[locationSlug] — works for any event's
+ * locations (World Cup cities, US Open venues, whatever's next).
  */
 
-export default function DownloadGuideButton({ citySlug }: { citySlug: string }) {
+export default function DownloadGuideButton({
+  eventSlug,
+  locationSlug,
+}: {
+  eventSlug: string;
+  locationSlug: string;
+}) {
   const [status, setStatus] = useState<"idle" | "loading" | "error">("idle");
   const [errorMsg, setErrorMsg] = useState("");
 
@@ -21,7 +26,7 @@ export default function DownloadGuideButton({ citySlug }: { citySlug: string }) 
     setErrorMsg("");
 
     try {
-      const res = await fetch(`/api/guides/${citySlug}`);
+      const res = await fetch(`/api/guides/${eventSlug}/${locationSlug}`);
       const data = await res.json();
 
       if (!res.ok) {
