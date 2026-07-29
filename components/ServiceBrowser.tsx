@@ -14,10 +14,10 @@ import { EASE_OUT } from "@/lib/motion";
  * and US Open venues alike.
  */
 
-type Service = {
-  category: string;
-  name: string;
-  description: string;
+interface Service  {
+  category?: string;
+  name?: string;
+  description?: string;
 };
 
 export default function ServiceBrowser({
@@ -47,7 +47,7 @@ export default function ServiceBrowser({
                 : "bg-[#142050] text-white/60 hover:text-white"
             }`}
           >
-            {cat.toUpperCase()}
+            {cat?.toUpperCase()}
           </button>
         ))}
       </div>

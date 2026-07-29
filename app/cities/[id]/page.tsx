@@ -50,7 +50,7 @@ export default async function CityPage({
 
       <div className="mt-8 flex flex-wrap gap-4">
         {!isUnlocked && <PurchaseButton sku="single_city_guide" />}
-        {isUnlocked && <DownloadGuideButton citySlug={city.slug} />}
+        {isUnlocked && <DownloadGuideButton locationSlug={city.slug} />}
       </div>
 
       <section className="mt-16">
@@ -58,7 +58,7 @@ export default async function CityPage({
           <ServiceBrowser
             services={services}
             isUnlocked={isUnlocked}
-            citySlug={city.slug}
+            guideSku={city.slug}
           />
         ) : (
           <p className="text-blue-200">

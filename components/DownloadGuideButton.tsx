@@ -15,8 +15,8 @@ export default function DownloadGuideButton({
   eventSlug,
   locationSlug,
 }: {
-  eventSlug: string;
-  locationSlug: string;
+  eventSlug?: string;
+  locationSlug?: string;
 }) {
   const [status, setStatus] = useState<"idle" | "loading" | "error">("idle");
   const [errorMsg, setErrorMsg] = useState("");
