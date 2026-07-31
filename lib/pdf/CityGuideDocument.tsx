@@ -84,11 +84,11 @@ type Service = {
 };
 
 interface CityGuideProps {
-  eyebrow: string;
-  cityName: string;
-  tagline: string;
+  eyebrow?: string;
+  cityName?: string;
+  tagline?: string;
   heroImage?: string;
-  services: Service[];
+  services?: Service[];
 };
 
 
@@ -99,7 +99,7 @@ export function CityGuideDocument({
   heroImage,
   services,
 }: CityGuideProps) {
-  const categories = Array.from(new Set(services.map((s) => s.category)));
+  const categories = services ? Array.from(new Set(services.map((s) => s.category))) : [];
 
   return (
     <Document title={`${cityName} — ComfortLifeUS Guide`}>
@@ -119,7 +119,7 @@ export function CityGuideDocument({
         <View style={styles.cover}>
           <View>
             <Text style={styles.eyebrow}>{eyebrow}</Text>
-            <Text style={styles.coverTitle}>{cityName.toUpperCase()}</Text>
+            <Text style={styles.coverTitle}>{cityName ? cityName.toUpperCase() : ""}</Text>
             <Text style={[styles.coverTitle, styles.coverTitleAccent]}>
               GUIDE
             </Text>
@@ -141,8 +141,7 @@ export function CityGuideDocument({
           <Text style={styles.sectionEyebrow}>SECTION</Text>
           <Text style={styles.sectionTitle}>{category}</Text>
 
-          {services
-            .filter((s) => s.category === category)
+          {services?.filter((s) => s.category === category)
             .map((s) => (
               <View key={s.name} style={styles.card}>
                 <Text style={styles.cardTitle}>{s.name}</Text>

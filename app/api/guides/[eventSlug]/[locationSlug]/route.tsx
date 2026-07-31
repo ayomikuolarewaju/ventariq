@@ -64,6 +64,7 @@ export async function GET(
       tagline={location.description}
       heroImage={location.image}
       services={services}
+      
     />
   );
 
