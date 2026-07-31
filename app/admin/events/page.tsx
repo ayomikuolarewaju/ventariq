@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { createClient } from "@/lib/supabase-server";
-import DeleteEventButton from "@/components/admin/DeleteEventButton";
+import DeleteEventButton from "@/components/DeleteEventButton";
 
 export default async function AdminEventsPage() {
   const supabase = await createClient();

@@ -2,7 +2,7 @@
 
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase-server";
-import EventForm from "@/components/admin/EventForm";
+import EventForm from "@/components/EventForm";
 
 export default async function EditEventPage({
   params,

@@ -1,6 +1,6 @@
 // app/admin/events/new/page.tsx
 
-import EventForm from "@/components/admin/EventForm";
+import EventForm from "@/components/EventForm";
 
 export default function NewEventPage() {
   return (

@@ -2,7 +2,7 @@
 
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase-server";
-import LocationPricingManager from "@/components/admin/LocationPricingManager";
+import LocationPricingManager from "@/components/LocationPricingManager";
 
 export default async function LocationPricingPage({
   params,
