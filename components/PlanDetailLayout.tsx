@@ -15,11 +15,11 @@ import { EASE_OUT } from "@/lib/motion";
  */
 
 type PlanDetailProps = {
-  eyebrow: string;
-  title: string;
-  description: string;
-  sku: string;
-  features: string[];
+  eyebrow?: string;
+  title?: string;
+  description?: string;
+  sku?: string;
+  features?: string[];
 };
 
 export default function PlanDetailLayout({
@@ -55,7 +55,7 @@ export default function PlanDetailLayout({
           WHAT&apos;S INCLUDED
         </p>
         <ul className="mt-5 space-y-3">
-          {features.map((f) => (
+          {features?.map((f) => (
             <li key={f} className="flex items-start gap-2 text-sm text-white/80">
               <span className="mt-0.5 text-[#F5B301]">✓</span>
               <span>{f}</span>

@@ -17,7 +17,7 @@ import AuthModal from "@/components/AuthModal";
  * shape if your checkout route expects something different.
  */
 
-export default function PurchaseButton({ sku }: { sku: string }) {
+export default function PurchaseButton({ sku }: { sku?: string }) {
   const [showAuth, setShowAuth] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
