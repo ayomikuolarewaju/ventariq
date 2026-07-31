@@ -10,7 +10,7 @@ export default async function PlanDetailPage({
   params: Promise<{ slug: string; planSku: string }>;
 }) {
   const { slug, planSku } = await params;
-  const event = getEvent(slug);
+  const event = await getEvent(slug);
   const plan = event?.plans.find((p) => p.sku === planSku);
 
   if (!event || !plan) {

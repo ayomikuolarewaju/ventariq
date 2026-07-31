@@ -5,16 +5,15 @@ import PurchaseButton from "@/components/PurchaseButton";
 import ServiceBrowser from "@/components/ServiceBrowser";
 import DownloadGuideButton from "@/components/DownloadGuideButton";
 import { createClient } from "@/lib/supabase-server";
-import { getLocation } from "@/lib/events";
-
-
+import { getLocation, getLocationServices } from "@/lib/events";
 
 export default async function LocationPage({
   params,
 }: {
-  params: { slug: string; locationSlug: string };
+  params: Promise<{ slug: string; locationSlug: string }>;
 }) {
-  const found = await getLocation(params.slug, params.locationSlug);
+  const { slug, locationSlug } = await params;
+  const found = await getLocation(slug, locationSlug);
 
   if (!found) {
     notFound();
@@ -43,11 +42,7 @@ export default async function LocationPage({
     isUnlocked = !!order;
   }
 
-  const { data: services } = await supabase
-    .from("location_services")
-    .select("category, name, description")
-    .eq("event_slug", event.slug)
-    .eq("location_slug", location.slug);
+  const services = await getLocationServices(location.id);
 
   return (
     <main className="container py-20">
@@ -60,6 +55,12 @@ export default async function LocationPage({
 
       <p className="mt-6 text-xl text-blue-200">{location.description}</p>
 
+      {location.basePrice > 0 && (
+        <p className="mt-2 font-mono text-sm text-[#F5B301]">
+          FROM ${location.basePrice.toFixed(2)}
+        </p>
+      )}
+
       <div className="mt-8 flex flex-wrap gap-4">
         {!isUnlocked && <PurchaseButton sku={guideSku} />}
         {isUnlocked && (
@@ -71,7 +72,7 @@ export default async function LocationPage({
       </div>
 
       <section className="mt-16">
-        {services && services.length > 0 ? (
+        {services.length > 0 ? (
           <ServiceBrowser
             services={services}
             isUnlocked={isUnlocked}

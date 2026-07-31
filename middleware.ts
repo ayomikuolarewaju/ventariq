@@ -1,8 +1,8 @@
 // middleware.ts (project root, same level as app/)
 //
-// Runs before every request to /admin/*. Refreshes the Supabase session
-// cookie and redirects to /admin/login if there isn't a valid one, so
-// order data can never render for a logged-out visitor.
+// Now that customers also authenticate (at checkout), a valid session
+// alone no longer means "admin." This checks membership in the `admins`
+// table before allowing /admin/* through.
 
 import { NextResponse, type NextRequest } from "next/server";
 import { createServerClient } from "@supabase/ssr";
@@ -12,7 +12,7 @@ export async function middleware(request: NextRequest) {
 
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!,
     {
       cookies: {
         getAll() {
@@ -38,12 +38,32 @@ export async function middleware(request: NextRequest) {
   const isLoginPage = request.nextUrl.pathname === "/admin/login";
 
   if (!user && !isLoginPage) {
-    const loginUrl = new URL("/admin/login", request.url);
-    return NextResponse.redirect(loginUrl);
+    return NextResponse.redirect(new URL("/admin/login", request.url));
+  }
+
+  if (user && !isLoginPage) {
+    const { data: adminRow } = await supabase
+      .from("admins")
+      .select("user_id")
+      .eq("user_id", user.id)
+      .maybeSingle();
+
+    if (!adminRow) {
+      // logged in, but not an admin (e.g. a customer) — bounce them out
+      return NextResponse.redirect(new URL("/admin/login?error=not_admin", request.url));
+    }
   }
 
   if (user && isLoginPage) {
-    return NextResponse.redirect(new URL("/admin/orders", request.url));
+    const { data: adminRow } = await supabase
+      .from("admins")
+      .select("user_id")
+      .eq("user_id", user.id)
+      .maybeSingle();
+
+    if (adminRow) {
+      return NextResponse.redirect(new URL("/admin/orders", request.url));
+    }
   }
 
   return response;

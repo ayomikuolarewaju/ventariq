@@ -3,7 +3,7 @@
 import Hero from "@/components/Hero";
 import InfoCard from "@/components/InfoCard";
 import EventCard from "@/components/EventCard";
-import { events, getFeaturedEvent } from "@/lib/events";
+import { getEvents, getFeaturedEvent } from "@/lib/events";
 
 const FEATURES = [
   {
@@ -26,8 +26,11 @@ const FEATURES = [
   },
 ];
 
-export default function Home() {
-  const featured = getFeaturedEvent();
+export default async function Home() {
+  const [featured, events] = await Promise.all([
+    getFeaturedEvent(),
+    getEvents(),
+  ]);
   const otherEvents = events.filter((e) => e.slug !== featured.slug).slice(0, 2);
   const spotlightEvents = [featured, ...otherEvents];
 
@@ -46,7 +49,6 @@ export default function Home() {
         secondaryLabel="Browse All Events"
       />
 
-      {/* value props */}
       <section className="container py-24">
         <p className="font-mono text-xs tracking-[0.3em] text-[#F5B301]">
           WHY COMFORTLIFEUS
@@ -62,7 +64,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* events */}
       <section className="container py-16">
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
@@ -88,7 +89,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* closing CTA band */}
       <section className="relative mt-24 overflow-hidden bg-[#E8002D] py-20">
         <div
           aria-hidden

@@ -15,7 +15,7 @@ import { EASE_OUT } from "@/lib/motion";
 type RouteItem = { code: string; label: string };
 
 type HeroProps = {
-  eyebrow: string;
+  eyebrow?: string;
   titleLine1: string;
   titleLine2: string;
   tagline: string;

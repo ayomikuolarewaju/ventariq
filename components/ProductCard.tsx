@@ -19,7 +19,7 @@ import { EASE_OUT } from "@/lib/motion";
  */
 
 type Product = {
-  sku: string;
+  sku?: string;
   name: string;
   description: string;
   price?: number;
@@ -39,7 +39,7 @@ export default function ProductCard({ sku,name,description,price,features }: Pro
       <div className="flex items-start justify-between p-6">
         <div>
           <span className="font-mono text-[11px] tracking-widest text-[#F5B301]">
-            FARE / {sku.toUpperCase()}
+            FARE / {(sku)?.toUpperCase()}
           </span>
           <h3 className="mt-2 font-display text-2xl tracking-wide">
             {name}

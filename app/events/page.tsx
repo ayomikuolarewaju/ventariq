@@ -1,9 +1,10 @@
 // app/events/page.tsx
 
 import EventCard from "@/components/EventCard";
-import { events } from "@/lib/events";
+import { getEvents } from "@/lib/events";
 
-export default function EventsPage() {
+export default async function EventsPage() {
+  const events = await getEvents();
   const upcoming = events.filter((e) => e.status === "upcoming");
   const past = events.filter((e) => e.status === "past");
 

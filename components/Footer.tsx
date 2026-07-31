@@ -1,17 +1,8 @@
 // components/Footer.tsx
 
 import Link from "next/link";
-import { Mail } from "lucide-react";
+import {  Mail } from "lucide-react";
 import { getFeaturedEvent } from "@/lib/events";
-
-/**
- * Footer — ComfortLifeUS (v3)
- *
- * Now reads from the events model instead of hardcoded World Cup links
- * and lib/cities. The "PLAN" group points at /events, and the location
- * column + bottom route-strip both reflect whichever event is currently
- * featured (US Open today) — updates automatically as events change.
- */
 
 const GROUPS = [
   {
@@ -31,13 +22,12 @@ const GROUPS = [
   },
 ];
 
-export default function Footer() {
-  const featured = getFeaturedEvent();
-  const topLocations = featured.locations.slice(0, 4);
+export default async function Footer() {
+  const featured = await getFeaturedEvent();
+  const topLocations = featured.locations?.slice(0, 4);
 
   return (
     <footer className="mt-24 bg-[#0A1440]">
-      {/* newsletter band */}
       <div className="relative overflow-hidden bg-[#E8002D]">
         <div
           aria-hidden
@@ -78,7 +68,6 @@ export default function Footer() {
       </div>
 
       <div className="container">
-        {/* perforation, punched notches matching CityCard/ProductCard */}
         <div className="relative">
           <div
             aria-hidden

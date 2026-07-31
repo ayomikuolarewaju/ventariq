@@ -13,8 +13,8 @@ import { getFeaturedEvent } from "@/lib/events";
  * perforation/notch styling alone carries the visual weight.
  */
 
-export default function NotFound() {
-  const featured = getFeaturedEvent();
+export default async function NotFound() {
+  const featured = await getFeaturedEvent();
 
   return (
     <main className="flex min-h-[70vh] items-center justify-center px-6 py-24">
