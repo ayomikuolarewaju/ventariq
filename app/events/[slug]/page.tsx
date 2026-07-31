@@ -40,7 +40,7 @@ export default async function EventLandingPage({
       </section>
 
       <section className="container py-20">
-        {event.locations.length > 0 && (
+        {event.locations?.length != 0 ? (
           <div className="mb-20">
             <p className="font-mono text-xs tracking-[0.3em] text-[#F5B301]">
               {event.status === "upcoming" ? "VENUES" : "HOST CITIES"}
@@ -49,7 +49,7 @@ export default async function EventLandingPage({
               Browse by location.
             </h2>
             <div className="mt-8 grid gap-6 md:grid-cols-3">
-              {event.locations.map((location) => (
+              {event.locations?.map((location) => (
                 <LocationCard
                   key={location.slug}
                   eventSlug={event.slug}
@@ -58,20 +58,18 @@ export default async function EventLandingPage({
               ))}
             </div>
           </div>
-        )}
+        ):""}
 
         <div className="grid gap-8 md:grid-cols-2">
-          {event.plans.map((plan) => (
+          {event.plans?.map((plan) => (
             <div key={plan.sku}>
-              <ProductCard
-                product={{
-                  sku: plan.sku,
-                  name: plan.name,
-                  description: plan.description,
-                  features: plan.features,
-                  price: plan.price,
-                }}
-              />
+              <ProductCard sku={plan.sku}
+                  name={plan.name}
+                  description={plan.description}
+                  features={plan.features}
+                  price={plan.price}
+                />
+              
               <Link
                 href={`/events/${event.slug}/${plan.sku}`}
                 className="mt-3 inline-block font-mono text-xs tracking-widest text-white/60 transition-colors hover:text-white"
