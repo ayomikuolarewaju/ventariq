@@ -135,13 +135,13 @@ export default async function Footer() {
             </div>
           ))}
 
-          {topLocations.length > 0 && (
+          {topLocations?.length !=0 ? (
             <div>
               <p className="font-mono text-xs tracking-widest text-[#F5B301]">
                 {featured.name.toUpperCase()}
               </p>
               <ul className="mt-4 space-y-2">
-                {topLocations.map((location) => (
+                {topLocations?.map((location) => (
                   <li key={location.slug}>
                     <Link
                       href={`/events/${featured.slug}/locations/${location.slug}`}
@@ -153,7 +153,7 @@ export default async function Footer() {
                 ))}
               </ul>
             </div>
-          )}
+          ):""}
         </div>
 
         <div className="flex flex-col gap-3 border-t border-white/10 py-6 text-xs text-white/40 md:flex-row md:items-center md:justify-between">
