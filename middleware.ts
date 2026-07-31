@@ -62,7 +62,7 @@ export async function middleware(request: NextRequest) {
       .maybeSingle();
 
     if (adminRow) {
-      return NextResponse.redirect(new URL("/admin/orders", request.url));
+      return NextResponse.redirect(new URL("/admin/dashboard", request.url));
     }
   }
 

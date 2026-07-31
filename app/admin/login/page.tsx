@@ -2,10 +2,10 @@
 
 import { useState } from "react";
 import { supabase } from "@/lib/supabase";
-import { useRouter, useSearchParams } from "next/navigation";
+import { redirect, useSearchParams } from "next/navigation";
+
 
 export default function Login() {
-  const router = useRouter();
   const searchParams = useSearchParams();
 
   const [email, setEmail] = useState("");
@@ -39,7 +39,7 @@ export default function Login() {
       return;
     }
 
-    router.push("/admin/orders");
+    redirect("/admin/dashboard");
   }
 
   return (
