@@ -12,7 +12,7 @@ import { motion } from "framer-motion";
  * account was never actually required to fulfill an order.
  */
 
-export default function PurchaseButton({ sku }: { sku: string }) {
+export default function PurchaseButton({ sku }: { sku?: string }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
