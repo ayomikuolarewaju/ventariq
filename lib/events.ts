@@ -126,7 +126,7 @@ export async function getFeaturedEvent(): Promise<EventItem> {
 
 export async function getLocation(eventSlug: string, locationSlug: string) {
   const event = await getEvent(eventSlug);
-  const location = event?.locations.find((l) => l.slug === locationSlug);
+  const location = event?.locations?.find((l) => l.slug === locationSlug);
   return event && location ? { event, location } : null;
 }
 
