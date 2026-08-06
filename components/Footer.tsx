@@ -50,23 +50,6 @@ export default async function Footer() {
             </h3>
           </div>
 
-          {/* <form
-            className="flex w-full max-w-md gap-2"
-            onSubmit={(e) => e.preventDefault()}
-          >
-            <input
-              type="email"
-              required
-              placeholder="you@email.com"
-              className="w-full rounded px-4 py-3 text-sm text-black outline-none"
-            />
-            <button
-              type="submit"
-              className="shrink-0 rounded bg-[#0D1B4B] px-5 py-3 text-sm font-bold transition-transform hover:-translate-y-0.5"
-            >
-              Notify Me
-            </button>
-          </form> */}
         </div>
       </div>
 

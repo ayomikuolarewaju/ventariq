@@ -10,7 +10,7 @@ import logo from "@/public/hero/logo3.png";
 
 const LINKS = [
   { href: "/events", label: "Events" },
-  { href: "/cities", label: "Cities" },
+  { href: "/intake", label: "Let's Plan Your Trip" },
   { href: "/about", label: "About" },
   { href: "/contact", label: "Contact" },
 ];
