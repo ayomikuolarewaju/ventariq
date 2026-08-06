@@ -1,28 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
 import { supabase } from "@/lib/supabase";
 import { EASE_OUT } from "@/lib/motion";
 
-/**
- * /login — ComfortLifeUS
- *
- * Combined sign in / sign up. If a `sku` query param is present (set by
- * PurchaseButton when redirecting an unauthenticated buyer here), a
- * successful auth immediately resumes checkout for that sku and sends
- * the browser straight to Stripe. Otherwise it redirects to `redirect`
- * (or /dashboard by default).
- *
- * IMPORTANT: if your Supabase project has "Confirm email" enabled
- * (Authentication -> Settings), sign-up won't return an active session
- * until the user clicks the confirmation link -- so this page would
- * show an error trying to resume checkout with no session yet. For a
- * smooth buy flow, disable email confirmation for this project.
- */
-
-export default function LoginPage() {
+function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const sku = searchParams.get("sku");
@@ -139,5 +123,13 @@ export default function LoginPage() {
         </button>
       </motion.div>
     </main>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={null}>
+      <LoginForm />
+    </Suspense>
   );
 }
