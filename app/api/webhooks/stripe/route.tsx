@@ -39,7 +39,7 @@ export async function POST(req: Request) {
   }
 
   const session = event.data.object as any;
-  const supabase = createAdminClient();
+  const supabase = await createAdminClient();
 
   try {
     // idempotency: Stripe retries webhooks, never process the same
@@ -162,7 +162,7 @@ async function deliverLocationGuide(
 
   const pdfBuffer = await renderToBuffer(
     <CityGuideDocument
-      eyebrow={event.eyebrow}
+      eyebrow={event?.eyebrow}
       cityName={location.name}
       tagline={location.description}
       heroImage={location.image}
