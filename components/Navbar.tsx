@@ -61,10 +61,10 @@ export default function Navbar() {
         </ul>
 
         <Link
-          href="/events"
+          href="/intake"
           className="rounded bg-[#E8002D] px-5 py-2 text-sm font-bold transition-transform hover:-translate-y-0.5"
         >
-          Get Started
+          Lets Plan Your Trip
         </Link>
       </nav>
     </header>

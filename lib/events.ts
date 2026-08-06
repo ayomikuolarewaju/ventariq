@@ -16,7 +16,7 @@ export type Plan = {
   sku: string;
   name: string;
   description: string;
-  features: string[];
+  features?: string[];
   price?: number;
 };
 
@@ -35,7 +35,7 @@ export type EventItem = {
   name: string;
   sport: string;
   status: "upcoming" | "past";
-  eyebrow?: string | 'undefined';
+  eyebrow: string;
   tagline: string;
   description: string;
   heroImage?: string;
@@ -126,7 +126,7 @@ export async function getFeaturedEvent(): Promise<EventItem> {
 
 export async function getLocation(eventSlug: string, locationSlug: string) {
   const event = await getEvent(eventSlug);
-  const location = event?.locations?.find((l) => l.slug === locationSlug);
+  const location = event?.locations.find((l) => l.slug === locationSlug);
   return event && location ? { event, location } : null;
 }
 
@@ -162,4 +162,51 @@ export async function getLocationCategories(locationId: string) {
     name: c.name,
     addonPrice: c.addon_price != null ? Number(c.addon_price) : null,
   }));
+}
+
+// Resolves a checkout sku to what's actually being sold — a plan, or a
+// location guide (sku format: `${eventSlug}_${locationSlug}_guide`) —
+// so /api/checkout can look up the real price server-side rather than
+// trusting anything the client sends.
+export async function resolveSku(sku: string) {
+  const supabase = await createClient();
+
+  const { data: plan } = await supabase
+    .from("plans")
+    .select("*, events(slug, eyebrow)")
+    .eq("sku", sku)
+    .maybeSingle();
+
+  if (plan) {
+    return {
+      kind: "plan" as const,
+      sku: plan.sku,
+      name: plan.name,
+      price: plan.price != null ? Number(plan.price) : 0,
+      eventSlug: plan.events?.slug,
+    };
+  }
+
+  if (sku.endsWith("_guide")) {
+    const { data: locations } = await supabase
+      .from("event_locations")
+      .select("*, events(slug)");
+
+    const match = (locations ?? []).find(
+      (l: any) => `${l.events.slug}_${l.slug}_guide` === sku
+    );
+
+    if (match) {
+      return {
+        kind: "location_guide" as const,
+        sku,
+        name: match.name,
+        price: Number(match.base_price ?? 0),
+        eventSlug: match.events.slug,
+        locationSlug: match.slug,
+      };
+    }
+  }
+
+  return null;
 }

@@ -85,7 +85,7 @@ setMessage("Submission failed.");
 }catch(error){
 
 setMessage(
-"Unable to submit. Please contact support."
+"Unable to submit. Please fill form properly."
 );
 
 }

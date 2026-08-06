@@ -26,16 +26,29 @@ export async function GET(
     data: { user },
   } = await supabase.auth.getUser();
 
-  if (!user) {
+  if (!user?.email) {
     return NextResponse.json({ error: "Not signed in" }, { status: 401 });
+  }
+
+  const { data: customer } = await supabase
+    .from("customers")
+    .select("id")
+    .eq("email", user.email)
+    .maybeSingle();
+
+  if (!customer) {
+    return NextResponse.json(
+      { error: "No completed purchase found for this guide" },
+      { status: 403 }
+    );
   }
 
   const { data: order } = await supabase
     .from("orders")
     .select("id")
-    .eq("customer_id", user.id)
+    .eq("customer_id", customer.id)
     .eq("product_sku", guideSku)
-    .eq("fulfillment_status", "completed")
+    .eq("fulfillment_status", "delivered")
     .maybeSingle();
 
   if (!order) {
@@ -45,7 +58,7 @@ export async function GET(
     );
   }
 
-  const storagePath = `${event.slug}/${location.slug}/${user.id}.pdf`;
+  const storagePath = `${event.slug}/${location.slug}/${customer.id}.pdf`;
 
   const { data: existing } = await supabase.storage
     .from("guides")
@@ -64,7 +77,6 @@ export async function GET(
       tagline={location.description}
       heroImage={location.image}
       services={services}
-      
     />
   );
 

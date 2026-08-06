@@ -30,16 +30,27 @@ export default async function LocationPage({
 
   let isUnlocked = false;
 
-  if (user) {
-    const { data: order } = await supabase
-      .from("orders")
+  if (user?.email) {
+    // customers are matched by email, not the Supabase Auth user id --
+    // per the real schema, customers.id is a separate value created by
+    // the Stripe webhook, linked only by email
+    const { data: customer } = await supabase
+      .from("customers")
       .select("id")
-      .eq("customer_id", user.id)
-      .eq("product_sku", guideSku)
-      .eq("fulfillment_status", "completed")
+      .eq("email", user.email)
       .maybeSingle();
 
-    isUnlocked = !!order;
+    if (customer) {
+      const { data: order } = await supabase
+        .from("orders")
+        .select("id")
+        .eq("customer_id", customer.id)
+        .eq("product_sku", guideSku)
+        .eq("fulfillment_status", "delivered")
+        .maybeSingle();
+
+      isUnlocked = !!order;
+    }
   }
 
   const services = await getLocationServices(location.id);
