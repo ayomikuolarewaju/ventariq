@@ -5,6 +5,8 @@ import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { EASE_OUT } from "@/lib/motion";
+import Image from "next/image";
+import logo from "@/public/hero/logo3.png";
 
 const LINKS = [
   { href: "/events", label: "Events" },
@@ -32,7 +34,7 @@ export default function Navbar() {
     >
       <nav className="container flex items-center justify-between py-4">
         <Link href="/" className="font-display text-2xl tracking-wide">
-          COMFORT<span className="text-[#E8002D]">LIFE</span>US
+          <Image src={logo} alt="Logo" width={150} height={100} />
         </Link>
 
         <ul className="hidden items-center gap-8 md:flex">

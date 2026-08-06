@@ -3,6 +3,9 @@
 import Link from "next/link";
 import {  Mail } from "lucide-react";
 import { getFeaturedEvent } from "@/lib/events";
+import Image from "next/image";
+import logo from "@/public/hero/logo3.png";
+import instagram from "@/public/hero/instagram.png";  
 
 const GROUPS = [
   {
@@ -82,9 +85,7 @@ export default async function Footer() {
 
         <div className="grid gap-10 py-14 md:grid-cols-[2fr_1fr_1fr_1fr]">
           <div>
-            <p className="font-display text-2xl tracking-wide">
-              COMFORT<span className="text-[#E8002D]">LIFE</span>US
-            </p>
+            <Image src={logo} alt="Logo" width={150} height={100} />
             <p className="mt-3 max-w-sm text-sm text-blue-200">
               Event-by-event travel guides and visitor support, built so
               you land knowing exactly where to go.
@@ -96,21 +97,21 @@ export default async function Footer() {
                 aria-label="Instagram"
                 className="flex h-9 w-9 items-center justify-center rounded-full bg-[#142050] text-white/70 transition-colors hover:text-white"
               >
-                <Mail size={16} />
+                <Image src={instagram} alt="Instagram" width={20} height={20} />
               </a>
               <a
                 href="#"
                 aria-label="Twitter"
                 className="flex h-9 w-9 items-center justify-center rounded-full bg-[#142050] text-white/70 transition-colors hover:text-white"
               >
-                <Mail size={16} />
+                <p>❎</p>
               </a>
               <a
                 href="mailto:hello@comfortlifeus.com"
                 aria-label="Email"
                 className="flex h-9 w-9 items-center justify-center rounded-full bg-[#142050] text-white/70 transition-colors hover:text-white"
               >
-                <Mail size={16} />
+                <p>📧</p>
               </a>
             </div>
           </div>

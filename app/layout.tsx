@@ -27,7 +27,7 @@ const inter = Inter({
 });
 
 export const metadata = {
-  title: "ComfortLifeUS | World Cup Travel Planning",
+  title: "Ventariq | plan less, experience more",
   description: "Personalized World Cup travel guides and visitor support",
 };
 
